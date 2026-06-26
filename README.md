@@ -29,5 +29,5 @@ ALTER TABLE `schedule` ADD CONSTRAINT `PK_SCHEDULE` PRIMARY KEY (
 
 | 기능 | 메서드 | URL | 요청예시 | 응답예시
  --- --- --- ---
- | 일정 단건조회 | GET | /schedules/{schedule-id} | /schedules/1 | { "schedule-id" : 1,  } | 
+ | 일정 단건조회 | GET | /schedules/{schedule-id} | /schedules/1 | { "schedule-id" : 1,  } 
  
