@@ -18,9 +18,21 @@ public class Schedule extends CommonEntity {
     private String scheduleName;
     @Column(length = 512, nullable = false)
     private String contents;
-    @Column(length = 50, nullable = false, unique = true)
+    @Column(length = 50, nullable = false)
     private String authorName;
     @Column(length = 50, nullable = false)
     private String schedulePw;
+
+    public Schedule(String scheduleName, String contents, String authorName, String schedulePw) {
+        this.scheduleName = scheduleName;
+        this.contents = contents;
+        this.authorName = authorName;
+        this.schedulePw = schedulePw;
+    }
+
+    public void updateSchedule(String scheduleName, String authorName) {
+        this.scheduleName = scheduleName;
+        this.authorName = authorName;
+    }
 
 }
