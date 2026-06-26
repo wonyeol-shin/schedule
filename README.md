@@ -13,13 +13,13 @@ DROP TABLE IF EXISTS `schedules`;
 
 
 CREATE TABLE `schedules` (
-	`scheduleId`	Long	NOT NULL,
-	`scheduleName`	varchar(12)	NOT NULL,
-	`contents`	varchar(512)	NOT NULL,
-	`authorName` varchar(50)	NOT NULL,
-	`schedulePw`	varchar(50)	NOT NULL,
-	`createdAt`	datetime	NOT NULL,
-	`modifiedAt`datetime	NOT NULL
+	`scheduleId` bigint	NOT NULL AUTO_INCREMENT,
+	`scheduleName` varchar(12) NOT NULL,
+	`contents`	varchar(512) NOT NULL,
+	`authorName` varchar(50) NOT NULL,
+	`schedulePw` varchar(50) NOT NULL,
+	`createdAt`	datetime NOT NULL,
+	`modifiedAt` datetime NOT NULL
 );
 
 ALTER TABLE `schedules` ADD CONSTRAINT `PK_SCHEDULE` PRIMARY KEY (
@@ -36,11 +36,11 @@ Base URL : http://localhost:8080
 
 **Request - 요청**
 * Method : `GET`
-* URL : `/schedules/{schedule-id}`
+* URL : `/schedules/{scheduleId}`
 
 | 속성 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| schedule-id | long | yes | 원하는 일정 조회 | 
+| scheduleId | long | yes | 원하는 일정 조회 | 
 
 **Response - 응답**
 * Status Code : `200`
@@ -53,8 +53,8 @@ Base URL : http://localhost:8080
 	"scheduleName" : "타대오가 해야될 것1",
 	"contents" : "배드로 숑디와 탕후루 먹기",
 	"authorName" : "타대오",
-	"createdAt" : 20260602,
-	"modifiedAt" : 20260602
+	"createdAt" : "2026-06-02",
+	"modifiedAt" : "2026-06-02"
 }
 ```
 
@@ -62,16 +62,17 @@ Base URL : http://localhost:8080
 
 **Request - 요청**
 * Method : `GET`
-* URL : `/users/{user-id}/schedules`
+* URL : `/schedules`
+* Query Parameter : authorName
 
 | 속성 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| user-id | long | yes | 원하는 사용자의 일정 | 
+| authorName | String | no | 작성자명 기준 전체 일정조회 | 
 
 
 **Response - 응답**
 * Status Code : `200`
-* Comment : 조회 다건 성공, 일정이 없을 경우 [] 빈 배열 전달
+* Comment : 조회 성공, 사용자의 일정이 없을 경우 [] 빈 배열 전달
 * Response Body : `application/json`
 * Body : 
 ```JSON
@@ -80,35 +81,31 @@ Base URL : http://localhost:8080
   	"scheduleId" : 1,
   	"scheduleName" : "타대오가 해야될 것1",
   	"contents" : "배드로 숑디와 탕후루 먹기",
-	"authorName" : "사도 타대오",
-	"createdAt" : 20260602,
-	"modifiedAt" : 20260602
+	"authorName" : "타대오",
+	"createdAt" : "2026-06-02",
+	"modifiedAt" : "2026-06-02"
 	},
 	{
-  	"scheduleId" : 2,
+  	"scheduleId" : 7,
   	"scheduleName" : "타대오가 해야될 것2",
   	"contents" : "배드로 숑디와 훈련하기;",
-  	"authorName" : "사도 타대오",
-	"createdAt" : 20260602,
-	"modifiedAt" : 20260602
+  	"authorName" : "타대오",
+	"createdAt" : "2026-06-02",
+	"modifiedAt" : "2026-06-02"
 	}
 ]
 ```
 
-### 📌 일정 등록
+### 📌 일정 등록(생성)
 
 **Request - 요청**
 * Method : `POST`
-* URL : `/users/{user-id}/schedules`
-
-| 속성 | 타입 | 필수 | 설명 |
-|---|---|---|---|
-| user-id | long | yes | 원하는 사용자의 일정 | 
+* URL : `/schedules`
 
 * Body : 
 ```JSON
 {
-  "scheduleName" : "타대오가 해야될 것",
+  "scheduleName" : "타대오가 해야될 것1",
   "contents" : "배드로 숑디와 탕후루 먹기",
   "authorName" : "타대오",
   "schedulePw" : "12345"
@@ -122,49 +119,70 @@ Base URL : http://localhost:8080
 * Body : 
 ```JSON
 {
-	"schedule-id" : 1,
-	"schedule-name" : "타대오가 해야될 것1",
+	"scheduleId" : 1,
+	"scheduleName" : "타대오가 해야될 것1",
 	"contents" : "배드로 숑디와 탕후루 먹기",
-	"author-name" : "타대오",
-	"created-at" : 20260602,
-	"modified-at" : 20260602
+	"authorName" : "타대오",
+	"createdAt" : "2026-06-02",
+	"modifiedAt" : "2026-06-02"
 }
 ```
 
-### 📌 일정 등록
+### 📌 일정 수정
 
 **Request - 요청**
-* Method : `POST`
-* URL : `/users/{user-id}/schedules`
+* Method : `PATCH`
+* URL : `/schedules/{scheduleId}`
 
 | 속성 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| user-id | long | yes | 원하는 사용자의 일정 | 
+| scheduleId | long | yes | 원하는 일정 수정 | 
 
 * Body : 
 ```JSON
 {
-  "scheduleName" : "타대오가 해야될 것",
-  "contents" : "배드로 숑디와 탕후루 먹기",
-  "authorName" : "타대오",
+  "scheduleName" : "카게오가 수정함",
+  "authorName" : "카케오",
   "schedulePw" : "12345"
 }
 ```
 
 **Response - 응답**
-* Status Code : `201`
-* Comment : 일정 생성 성공
+* Status Code : `200`
+* Comment : 일정 수정 성공
 * Response Body : `application/json`
 * Body : 
 ```JSON
 {
-	"schedule-id" : 1,
-	"schedule-name" : "타대오가 해야될 것1",
+	"scheduleId" : 1,
+	"scheduleNname" : "카게오가 수정함",
 	"contents" : "배드로 숑디와 탕후루 먹기",
-	"author-name" : "타대오",
-	"created-at" : 20260602,
-	"modified-at" : 20260602
+	"authorName" : "카케오",
+	"modifiedAt" : "2026-06-02"
 }
 ```
+
+### 📌 일정 삭제
+
+**Request - 요청**
+* Method : `DELETE`
+* URL : `/schedules/{scheduleId}`
+
+| 속성 | 타입 | 필수 | 설명 |
+|---|---|---|---|
+| scheduleId | long | yes | 삭제 할 일정 ID | 
+
+* Body : 
+```JSON
+{
+  "schedulePw" : "12345"
+}
+```
+
+**Response - 응답**
+* Status Code : `204`
+* Comment : 일정 삭제 성공
+
+
 
 
