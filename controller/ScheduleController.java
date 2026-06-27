@@ -25,7 +25,7 @@ public class ScheduleController {
 
     @GetMapping("/schedules/{scheduleId}")
     public ResponseEntity<GetScheduleResponse> getOneSchedule(
-            @PathVariable("scheduleId") Long scheduleId
+            @PathVariable Long scheduleId
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(scheduleService.getOneSchedule(scheduleId));
     }
@@ -39,9 +39,19 @@ public class ScheduleController {
 
     @PatchMapping("/schedules/{scheduleId}")
     public ResponseEntity<PatchScheduleResponse> patchSchedule(
-            @PathVariable("scheduleId") Long scheduleId,
-            PatchScheduleRequest request
+            @PathVariable Long scheduleId,
+            @RequestBody PatchScheduleRequest request
     ) {
-      return   ResponseEntity.status(HttpStatus.OK).body(scheduleService.patchSchedule(scheduleId, request));
+      return ResponseEntity.status(HttpStatus.OK).body(scheduleService.patchSchedule(scheduleId, request));
     }
+
+    @DeleteMapping("/schedules/{scheduleId}")
+    public ResponseEntity<Void> deleteSchedule(
+            @PathVariable Long scheduleId,
+            @RequestBody DeleteScheduleRequest request
+    ) {
+        scheduleService.deleteSchedule(scheduleId, request);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 }

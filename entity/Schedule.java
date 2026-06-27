@@ -14,7 +14,7 @@ public class Schedule extends CommonEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long scheduleId;
-    @Column(length = 12, nullable = false)
+    @Column(length = 50, nullable = false)
     private String scheduleName;
     @Column(length = 512, nullable = false)
     private String contents;

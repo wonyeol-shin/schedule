@@ -87,16 +87,17 @@ public class ScheduleService {
         );
     }
 
-
+    @Transactional
     public PatchScheduleResponse patchSchedule(Long scheduleId, PatchScheduleRequest request) {
         Schedule getSchedule = scheduleRepository.findById(scheduleId).orElseThrow(
                 () -> new IllegalStateException("없는 일정 ID 입니다."));
         // 패스워드가 다를 경우
+
         if (!request.getSchedulePw().equals(getSchedule.getSchedulePw())) {
             throw new IllegalStateException("패스워드가 틀렸습니다.");
         }
 
-        getSchedule.updateSchedule(request.getScheduleName(), request.getScheduleName());
+        getSchedule.updateSchedule(request.getScheduleName(), request.getAuthorName());
 
         return new PatchScheduleResponse(
                 getSchedule.getScheduleId(),
@@ -107,4 +108,15 @@ public class ScheduleService {
         );
     }
 
+    @Transactional
+    public void deleteSchedule(Long scheduleId, DeleteScheduleRequest request) {
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
+                () -> new IllegalStateException("없는 일정 ID 입니다.")
+        );
+
+        if (!request.getSchedulePw().equals(schedule.getSchedulePw())) {
+            throw new IllegalStateException("패스워드가 틀렸습니다.");
+        }
+        scheduleRepository.deleteById(scheduleId);
+    }
 }
