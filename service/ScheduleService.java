@@ -2,6 +2,8 @@ package com.example.schedule.service;
 
 import com.example.schedule.dto.*;
 import com.example.schedule.entity.Schedule;
+import com.example.schedule.error.PasswordMismatchException;
+import com.example.schedule.error.ScheduleNotFoundException;
 import com.example.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -53,7 +55,7 @@ public class ScheduleService {
     @Transactional(readOnly = true)
     public GetScheduleResponse getOneSchedule(Long scheduleId) {
         Schedule getSchedule = scheduleRepository.findById(scheduleId).orElseThrow(
-                () -> new IllegalStateException("없는 일정 ID 입니다.")
+                () -> new ScheduleNotFoundException()
         );
 
         return new GetScheduleResponse(
@@ -90,11 +92,11 @@ public class ScheduleService {
     @Transactional
     public PatchScheduleResponse patchSchedule(Long scheduleId, PatchScheduleRequest request) {
         Schedule getSchedule = scheduleRepository.findById(scheduleId).orElseThrow(
-                () -> new IllegalStateException("없는 일정 ID 입니다."));
+                () -> new ScheduleNotFoundException());
         // 패스워드가 다를 경우
 
         if (!request.getSchedulePw().equals(getSchedule.getSchedulePw())) {
-            throw new IllegalStateException("패스워드가 틀렸습니다.");
+            throw new PasswordMismatchException();
         }
 
         getSchedule.updateSchedule(request.getScheduleName(), request.getAuthorName());
@@ -111,11 +113,11 @@ public class ScheduleService {
     @Transactional
     public void deleteSchedule(Long scheduleId, DeleteScheduleRequest request) {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
-                () -> new IllegalStateException("없는 일정 ID 입니다.")
+                () -> new ScheduleNotFoundException()
         );
 
         if (!request.getSchedulePw().equals(schedule.getSchedulePw())) {
-            throw new IllegalStateException("패스워드가 틀렸습니다.");
+            throw new PasswordMismatchException();
         }
         scheduleRepository.deleteById(scheduleId);
     }
