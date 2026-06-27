@@ -4,7 +4,7 @@
 ## ERD
 
 **ERD링크**<br>
-``<iframe width="600" height="336" src="https://www.erdcloud.com/p/vm5b255nF7nu29Ye7" frameborder="0" allowfullscreen></iframe>``
+https://www.erdcloud.com/p/vm5b255nF7nu29Ye7
 <br><br>
 **SQL쿼리** 
 
@@ -14,7 +14,7 @@ DROP TABLE IF EXISTS `schedules`;
 
 CREATE TABLE `schedules` (
 	`scheduleId` bigint	NOT NULL AUTO_INCREMENT,
-	`scheduleName` varchar(12) NOT NULL,
+	`scheduleName` varchar(50) NOT NULL,
 	`contents`	varchar(512) NOT NULL,
 	`authorName` varchar(50) NOT NULL,
 	`schedulePw` varchar(50) NOT NULL,
@@ -57,6 +57,9 @@ Base URL : http://localhost:8080
 	"modifiedAt" : "2026-06-02"
 }
 ```
+
+* Status Code : `404`
+* Comment : 없는 유저 검색 
 
 ### 📌 일정 조회(다건)
 
@@ -162,6 +165,12 @@ Base URL : http://localhost:8080
 }
 ```
 
+* Status Code : `401`
+* Comment : 패스워드가 틀렸음
+
+* Status Code : `404`
+* Comment : 없는 유저 검색 
+
 ### 📌 일정 삭제
 
 **Request - 요청**
@@ -183,6 +192,10 @@ Base URL : http://localhost:8080
 * Status Code : `204`
 * Comment : 일정 삭제 성공
 
+* Status Code : `401`
+* Comment : 패스워드가 틀렸음
 
+* Status Code : `404`
+* Comment : 없는 유저 검색 
 
 
